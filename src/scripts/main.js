@@ -1,4 +1,5 @@
-function setDate(date, time,event) {
+function dateValidator() {
+
     var currentDay = new Date().getDate()
     var currentMonth = new Date().getMonth() + 1
     var currentYear = new Date().getFullYear()
@@ -10,20 +11,63 @@ function setDate(date, time,event) {
     currentHour > 10 ? currentHour : currentHour = '0' + currentHour
     currentMin > 10 ? currentMin : currentMin = '0' + currentMin
 
-    var currentDate = `${currentDay}.${currentMonth}.${currentYear}`
-    var currentTime = `${currentHour}:${currentMin}`
-    // console.log(currentDate,currentTime)
-
-    if (date === currentDate && time === currentTime) {
-        alert(`It is ${event} time!`)
-        return
-    }
-    setTimeout(()=>{
-        setDate(date, time)
-    }, 1000)
+    return [`${currentDay}.${currentMonth}.${currentYear}`, `${currentHour}:${currentMin}`]
 }
 
-// setDate('03.12.2020', '21:48','Mike B-Day')
 
+
+var calendar = function () {
+
+    var events = []
+
+    function setEvent(date, time, event, check) {
+
+        var newEvent = {
+            event,
+            date,
+            time
+        };
+
+        if (!check) {
+            events.push(newEvent)
+        }
+
+        [currentDate, currentTime] = dateValidator()
+
+        if (date === currentDate && time === currentTime) {
+            alert(`It is ${event} time!`)
+            return
+        }
+        setTimeout(() => {
+            setEvent(date, time, event, 1)
+        }, 1000)
+
+    }
+
+    function eventsList() {
+        console.log(events)
+    }
+
+    function removeEvent(event) {
+        events = events.filter((el) => {
+            return el.event !== event
+        })
+        console.log(events)
+    }
+
+    return {
+        setEvent,
+        eventsList,
+        removeEvent
+    }
+
+}()
+
+// calendar.setEvent('06.12.2020','19:16','new year')
+// calendar.setEvent('06.12.2020','19:17','new year 2')
+// // calendar.removeEvent('new year')
+//
+// calendar.eventsList()
+// eventsList()
 
 
