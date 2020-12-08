@@ -11,39 +11,43 @@ function dateValidator() {
     currentHour > 10 ? currentHour : currentHour = '0' + currentHour
     currentMin > 10 ? currentMin : currentMin = '0' + currentMin
 
-    return [`${currentDay}.${currentMonth}.${currentYear}`, `${currentHour}:${currentMin}`]
+    return `${currentDay}.${currentMonth}.${currentYear} ${currentHour}:${currentMin}`
 }
+
+// function someThing(event){
+//     alert(`It is ${event} time!`)
+// }
 
 var calendar = (function () {
 
     var events = []
 
-    function setEvent(date, time, event, isInEventsList) {
+    function setEvent(date, event, isInEventsList) {
 
         var newEvent = {
             event,
             date,
-            time
         };
 
         if (!isInEventsList) {
             events.push(newEvent)
         }
 
-        [currentDate, currentTime] = dateValidator()
+        var currentTime = dateValidator()
 
-        if (date === currentDate && time === currentTime) {
+        if (date === currentTime) {
             alert(`It is ${event} time!`)
+            // someThing(event)
             return
         }
 
         setTimeout(() => {
-            setEvent(date, time, event, true)
+            setEvent(date, event, true)
         }, 1000)
 
     }
 
-    function eventsList() {
+    function getEventsList() {
         console.log(events)
     }
 
@@ -56,7 +60,7 @@ var calendar = (function () {
 
     return {
         setEvent,
-        eventsList,
+        getEventsList,
         removeEvent
     }
 
