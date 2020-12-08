@@ -37,16 +37,8 @@ var calendar = (function () {
         }
     }
 
-    function getEventsList(){
-        console.log(events)
-    }
-
-    function removeEvent(event) {
-        events = events.filter(el => el.event !== event)
-    }
-
     function timeCheck(){
-        if (!events.length || events.every(event => event.eventIsDone)) {
+        if (!events.length || events.every(el => el.eventIsDone)) {
             started = false;
             console.log('All events are completed')
             return
@@ -62,6 +54,14 @@ var calendar = (function () {
         })
 
         setTimeout(()=>{timeCheck()},1000)
+    }
+
+    function getEventsList(){
+        console.log(events)
+    }
+
+    function removeEvent(eventToRemove) {
+        events = events.filter(el => el.event !== eventToRemove)
     }
 
     return {
