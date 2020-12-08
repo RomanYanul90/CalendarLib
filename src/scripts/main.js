@@ -14,13 +14,11 @@ function dateValidator() {
     return [`${currentDay}.${currentMonth}.${currentYear}`, `${currentHour}:${currentMin}`]
 }
 
-
-
-var calendar = function () {
+var calendar = (function () {
 
     var events = []
 
-    function setEvent(date, time, event, check) {
+    function setEvent(date, time, event, isInEventsList) {
 
         var newEvent = {
             event,
@@ -28,7 +26,7 @@ var calendar = function () {
             time
         };
 
-        if (!check) {
+        if (!isInEventsList) {
             events.push(newEvent)
         }
 
@@ -38,8 +36,9 @@ var calendar = function () {
             alert(`It is ${event} time!`)
             return
         }
+
         setTimeout(() => {
-            setEvent(date, time, event, 1)
+            setEvent(date, time, event, true)
         }, 1000)
 
     }
@@ -52,7 +51,7 @@ var calendar = function () {
         events = events.filter((el) => {
             return el.event !== event
         })
-        console.log(events)
+        console.log(`${event} was deleted from events list`)
     }
 
     return {
@@ -61,7 +60,7 @@ var calendar = function () {
         removeEvent
     }
 
-}()
+})()
 
 // calendar.setEvent('06.12.2020','19:16','new year')
 // calendar.setEvent('06.12.2020','19:17','new year 2')
