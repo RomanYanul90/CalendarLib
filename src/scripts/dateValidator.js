@@ -64,10 +64,18 @@ var calendar = (function () {
         events = events.filter(el => el.event !== eventToRemove)
     }
 
+    function changeEvent(event,newDate,newName){
+       return events.find((el)=>{if(el.event===event){
+            el.event=newName
+            el.date=newDate
+        }})
+    }
+
     return {
         setEvent,
         removeEvent,
-        getEventsList
+        getEventsList,
+        changeEvent
     }
 
 })()
