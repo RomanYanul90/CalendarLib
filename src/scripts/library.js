@@ -97,12 +97,30 @@
 // now[1] = now.splice(0,1, now[1])[0]
 // console.log(now.join('/'))
 
+
+
+// function getEventsListByWeek(startWeekDay) {
+//     var endWeekDay=new Date(`${new Date(datePreparation(startWeekDay)).getMonth()+1}.${new Date(datePreparation(startWeekDay)).getDate()+7}.${new Date(datePreparation(startWeekDay)).getFullYear()}`)
+//     console.log(endWeekDay)
+//     var result = events.map((el)=>{
+//         if(el.date.toDateString()>new Date(datePreparation(startWeekDay)).toDateString()&&el.date.toDateString()<new Date(datePreparation(endWeekDay)).toDateString()){
+//             return el
+//         }
+//     })
+//     console.log(result)
+// }
+
+
 function datePreparation(userDate){
     var time = userDate.split(" ")[1]
     var date = userDate.split(" ")[0].split('.')
     date[1] = date.splice(0,1, date[1])[0]
-    return  `${date.join('.')} ${time}`
+    if(time){
+        return  new Date(`${date.join('.')} ${time}`)
+    }else{
+        return  new Date(`${date.join('.')}`)
+    }
 }
 
-console.log(datePreparation('09.12.2020 20:09:41'))
+// console.log(datePreparation('09.12.2020'))
 

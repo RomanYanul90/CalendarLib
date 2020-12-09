@@ -5,14 +5,14 @@ var calendar = (function () {
 
     function setEvent(date, event, callback) {
 
-        if (new Date(datePreparation(date)) < new Date()) {
+        if (dateHandler(date) < new Date()) {
             console.log("The time you specified has already passed!")
             return
         }
 
         var newEvent = {
             event,
-            date: new Date(datePreparation(date)),
+            date: dateHandler(date),
             callback,
             eventIsDone: false
         }
@@ -21,11 +21,6 @@ var calendar = (function () {
             console.log("An event with the same name and time already exists")
             return
         }
-
-        // if(events.some(el=>el.event===event && el.date===new Date(datePreparation(date)).toString() )){
-        //     console.log("An event with the same name and time already exists")
-        //     return
-        // }
 
         events.push(newEvent)
 
@@ -55,26 +50,30 @@ var calendar = (function () {
         }, 1000)
     }
 
-    function datePreparation(userDate) {
+    function dateHandler(userDate){
         var time = userDate.split(" ")[1]
         var date = userDate.split(" ")[0].split('.')
-        date[1] = date.splice(0, 1, date[1])[0]
-        return `${date.join('.')} ${time}`
+        date[1] = date.splice(0,1, date[1])[0]
+        if(time){
+            return  new Date(`${date.join('.')} ${time}`)
+        }else{
+            return  new Date(`${date.join('.')}`)
+        }
     }
 
-    function getEventsList(day) {
+    function getEventsListByDay(day) {
         var result = events.map((el)=>{
-            if(el.date.toDateString()===new Date(datePreparation(day)).toDateString()){
+            if(el.date.toDateString()===dateHandler(day).toDateString()){
                 return el
             }
         })
         console.log(result)
     }
-    // function getEventsList() {
-    //
-    //     console.log(events)
-    // }
 
+    function getEventsList() {
+
+        console.log(events)
+    }
 
     function removeEvent(eventToRemove) {
         events = events.filter(el => el.event !== eventToRemove)
@@ -82,9 +81,9 @@ var calendar = (function () {
 
     function changeEvent(event, date, newName = event, newDate = date) {
         return events.find((el) => {
-            if (el.event === event && el.date.toString() === new Date(datePreparation(date)).toString()) {
+            if (el.event === event && el.date.toString() === dateHandler(date).toString()) {
                 el.event = newName
-                el.date = new Date(datePreparation(newDate))
+                el.date = dateHandler(newDate)
             }
         })
     }
@@ -93,6 +92,7 @@ var calendar = (function () {
         setEvent,
         removeEvent,
         getEventsList,
+        getEventsListByDay,
         changeEvent
     }
 
