@@ -50,33 +50,44 @@ var calendar = (function () {
         }, 1000)
     }
 
-    function dateHandler(userDate){
+    function dateHandler(userDate) {
         var time = userDate.split(" ")[1]
         var date = userDate.split(" ")[0].split('.')
-        date[1] = date.splice(0,1, date[1])[0]
-        if(time){
-            return  new Date(`${date.join('.')} ${time}`)
-        }else{
-            return  new Date(`${date.join('.')}`)
+        date[1] = date.splice(0, 1, date[1])[0]
+        if (time) {
+            return new Date(`${date.join('.')} ${time}`)
+        } else {
+            return new Date(`${date.join('.')}`)
         }
     }
 
-    function getEventsListByDay(day) {
-        var result = events.map((el)=>{
-            if(el.date.toDateString()===dateHandler(day).toDateString()){
-                return el
+    function getEventsList(startDay, endDay) {
+        if (!startDay && !endDay) {
+            console.log(events)
+        }
+        if (startDay && !endDay) {
+            events.forEach((el) => {
+                if (el.date.toDateString() === dateHandler(startDay).toDateString()) {
+                    console.log(el)
+                }
+            })
+        }
+        if (startDay && endDay) {
+            startDay = Date.parse(dateHandler(startDay).toDateString())
+            endDay = Date.parse(dateHandler(endDay).toDateString())
+
+            for (var i = startDay; i <= endDay; i = i + 24 * 60 * 60 * 1000) {
+                events.forEach((el) => {
+                    if (el.date.toDateString() === new Date(i).toDateString()) {
+                        console.log(el)
+                    }
+                })
             }
-        })
-        console.log(result)
+        }
     }
 
-    function getEventsList() {
-
-        console.log(events)
-    }
-
-    function removeEvent(eventToRemove) {
-        events = events.filter(el => el.event !== eventToRemove)
+    function removeEvent(eventToRemove,date) {
+        events = events.filter(el => el.event !== eventToRemove && el.date.toString()!==dateHandler(date).toString())
     }
 
     function changeEvent(event, date, newName = event, newDate = date) {
@@ -92,7 +103,6 @@ var calendar = (function () {
         setEvent,
         removeEvent,
         getEventsList,
-        getEventsListByDay,
         changeEvent
     }
 
