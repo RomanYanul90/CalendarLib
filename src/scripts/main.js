@@ -1,76 +1,110 @@
-function dateValidator() {
-
-    var currentDay = new Date().getDate()
-    var currentMonth = new Date().getMonth() + 1
-    var currentYear = new Date().getFullYear()
-    var currentHour = new Date().getHours()
-    var currentMin = new Date().getMinutes()
-
-    currentDay > 10 ? currentDay : currentDay = '0' + currentDay
-    currentMonth > 10 ? currentMonth : currentMonth = '0' + currentMonth
-    currentHour > 10 ? currentHour : currentHour = '0' + currentHour
-    currentMin > 10 ? currentMin : currentMin = '0' + currentMin
-
-    return `${currentDay}.${currentMonth}.${currentYear} ${currentHour}:${currentMin}`
-}
-
-// function someThing(event){
-//     alert(`It is ${event} time!`)
-// }
-
 var calendar = (function () {
 
     var events = []
+    var started = false
 
-    function setEvent(date, event, isInEventsList) {
+    function setEvent(date, event, callback) {
 
-        var newEvent = {
-            event,
-            date,
-        };
-
-        if (!isInEventsList) {
-            events.push(newEvent)
-        }
-
-        var currentTime = dateValidator()
-
-        if (date === currentTime) {
-            alert(`It is ${event} time!`)
-            // someThing(event)
+        if (dateHandler(date) < new Date()) {
+            console.log("The time you specified has already passed!")
             return
         }
 
-        setTimeout(() => {
-            setEvent(date, event, true)
-        }, 1000)
+        var newEvent = {
+            event,
+            date: dateHandler(date),
+            callback,
+            eventIsDone: false
+        }
 
+        if (events.some(el => el.event === newEvent.event && el.date.toString() === newEvent.date.toString())) {
+            console.log("An event with the same name and time already exists")
+            return
+        }
+
+        events.push(newEvent)
+
+        if (!started) {
+            console.log('Running')
+            started = true;
+            timeCheck();
+        }
     }
 
-    function getEventsList() {
-        console.log(events)
-    }
+    function timeCheck() {
+        if (!events.length || events.every(el => el.eventIsDone)) {
+            started = false;
+            console.log('All events are completed')
+            return
+        }
 
-    function removeEvent(event) {
-        events = events.filter((el) => {
-            return el.event !== event
+        events.forEach((el) => {
+            if (el.eventIsDone === false && el.date.toString() === new Date().toString()) {
+                el.callback()
+                el.eventIsDone = true
+            }
         })
-        console.log(`${event} was deleted from events list`)
+
+        setTimeout(() => {
+            timeCheck()
+        }, 1000)
+    }
+
+    function dateHandler(userDate) {
+        var time = userDate.split(" ")[1]
+        var date = userDate.split(" ")[0].split('.')
+        date[1] = date.splice(0, 1, date[1])[0]
+        if (time) {
+            return new Date(`${date.join('.')} ${time}`)
+        } else {
+            return new Date(`${date.join('.')}`)
+        }
+    }
+
+    function getEventsList(startDay, endDay) {
+        if (!startDay && !endDay) {
+            console.log(events)
+        }
+        if (startDay && !endDay) {
+            events.forEach((el) => {
+                if (el.date.toDateString() === dateHandler(startDay).toDateString()) {
+                    console.log(el)
+                }
+            })
+        }
+        if (startDay && endDay) {
+            startDay = Date.parse(dateHandler(startDay).toDateString())
+            endDay = Date.parse(dateHandler(endDay).toDateString())
+
+            for (var i = startDay; i <= endDay; i = i + 24 * 60 * 60 * 1000) {
+                events.forEach((el) => {
+                    if (el.date.toDateString() === new Date(i).toDateString()) {
+                        console.log(el)
+                    }
+                })
+            }
+        }
+    }
+
+    function removeEvent(eventToRemove, date) {
+        events = events.filter(el => el.event !== eventToRemove && el.date.toString() !== dateHandler(date).toString())
+    }
+
+    function changeEvent(event, date, newName = event, newDate = date) {
+        return events.find((el) => {
+            if (el.event === event && el.date.toString() === dateHandler(date).toString()) {
+                el.event = newName
+                el.date = dateHandler(newDate)
+            }
+        })
     }
 
     return {
         setEvent,
+        removeEvent,
         getEventsList,
-        removeEvent
+        changeEvent
     }
 
 })()
-
-// calendar.setEvent('06.12.2020','19:16','new year')
-// calendar.setEvent('06.12.2020','19:17','new year 2')
-// // calendar.removeEvent('new year')
-//
-// calendar.eventsList()
-// eventsList()
-
 
