@@ -1,55 +1,36 @@
 (function () {
 
-    var repeatedEvents = [];
-    var started = false;
-
-
-    function dateHandler(userTime) {
-
-        return new Date().toLocaleDateString() + " " + userTime;
-
-        // console.log(Date.parse(currentDate)+24*60*60*1000)
-
+    function dateHandler(userDate) {
+        var time = userDate.split(" ")[1];
+        var date = userDate.split(" ")[0].split('.');
+        date[1] = date.splice(0, 1, date[1])[0];
+        if (time) {
+            return new Date(`${date.join('.')} ${time}`);
+        } else {
+            return new Date(`${date.join('.')}`);
+        }
     }
 
-    Calendar.setRepeatEvent = function (time, event, repeatInterval, callback) {
+    function nextDayDateCreate(currentDay) {
+        currentDay = dateHandler(currentDay);
+        return new Date(Date.parse(currentDay) + 24 * 60 * 60 * 1000).toLocaleDateString() + " " + new Date(Date.parse(currentDay) + 24 * 60 * 60 * 1000).toTimeString().split(" ")[0]
+    }
 
-        var newRepeatedEvent = {
-            id: Math.random().toString(36).substring(6),
-            event,
-            time: typeof (time) == "string" ? new Date(dateHandler(time)) : time,
-            repeatInterval,
-            callback,
-        };
-
-        repeatedEvents.push(newRepeatedEvent)
-
-        if (!started) {
-            console.log('Running');
-            started = true;
-            timeCheck();
-
-        }
-
-        Calendar.getRepeatedEvents = function () {
-            console.log(repeatedEvents)
-        }
-
-        function timeCheck() {
-
-
-            repeatedEvents.forEach((el) => {
-                if (el.time.toString() === new Date().toString()) {
-                    el.callback()
-                    var nextDay = new Date(Date.parse(el.time) + 24 * 60 * 60 * 1000);
-                    Calendar.setRepeatEvent(nextDay, el.event, el.repeatInterval, el.callback);
+    function setEventDecorator(func) {
+        return function () {
+            if (Object.values(arguments).includes("every day")) {
+                var clonedArgs = [...arguments]
+                clonedArgs[0]=nextDayDateCreate(clonedArgs[0])
+                // console.log(nextDayDateCreate(clonedArgs[0]))
+                arguments[2] = function () {
+                    setInterval(func(...clonedArgs), 24 * 60 * 60 * 1000)
+                    clonedArgs[2]()
                 }
-            })
-            setTimeout(() => {
-                timeCheck()
-            }, 1000)
-
+                return func(...arguments)
+            }
+            return func(...arguments)
         }
     }
 
+    Calendar.setEvent = setEventDecorator(Calendar.setEvent)
 }())
