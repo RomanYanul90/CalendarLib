@@ -16,21 +16,40 @@
         return new Date(Date.parse(currentDay) + 24 * 60 * 60 * 1000).toLocaleDateString() + " " + new Date(Date.parse(currentDay) + 24 * 60 * 60 * 1000).toTimeString().split(" ")[0]
     }
 
+    function daysCount(startDate, dayOfWeek) {
+        var count = 0
+        var daysOfWeek=["monday","tuesday","wednesday","thursday","friday",'saturday','sunday']
+        var currentDayOfWeek = dateHandler(startDate).getDay()
+        dayOfWeek=daysOfWeek.indexOf(dayOfWeek)+1
+        if(dayOfWeek>currentDayOfWeek){
+            count=dayOfWeek-currentDayOfWeek
+        }else {
+            count=7-currentDayOfWeek+dayOfWeek
+        }
+        return new Date(Date.parse(dateHandler(startDate))+count*24*60*60*1000)
+    }
+
+    //dayCount('23.12.2020',"monday")=============>"28.12.2020"
     function setEventDecorator(func) {
-        return function () {
-            if (Object.values(arguments).includes("every day")) {
-                var clonedArgs = [...arguments]
-                clonedArgs[0]=nextDayDateCreate(clonedArgs[0])
-                // console.log(nextDayDateCreate(clonedArgs[0]))
-                arguments[2] = function () {
-                    setInterval(func(...clonedArgs), 24 * 60 * 60 * 1000)
-                    clonedArgs[2]()
+        return function (date, event, callback, period) {
+            if (period === "every day") {
+                var newCallback = function () {
+                    callback();
+                    var nextDay = nextDayDateCreate(date);
+                    Calendar.setEvent(nextDay, event, newCallback);
                 }
-                return func(...arguments)
+                return func(date, event, newCallback, "every day");
             }
-            return func(...arguments)
+            if (period !== "every day") {
+                var arr = period.split(",")
+                console.log(daysCount(date,arr[1]))
+                // arr.forEach((el) => {
+                //     return Calendar.setEvent(daysCount(date, el), event, callback)
+                // })
+            }
+            return func(date, event, callback);
         }
     }
 
-    Calendar.setEvent = setEventDecorator(Calendar.setEvent)
+    Calendar.setEvent = setEventDecorator(Calendar.setEvent);
 }())
