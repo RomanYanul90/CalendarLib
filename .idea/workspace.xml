@@ -19,7 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3540f3bf-9683-45ee-9822-39d88844f77e" name="Default Changelist" comment="Decorator for setEvent function">
+    <list default="true" id="3540f3bf-9683-45ee-9822-39d88844f77e" name="Default Changelist" comment="add functional for setRepeatingEvent">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/scripts/moduleRepeatEvent.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/scripts/moduleRepeatEvent.js" afterDir="false" />
     </list>
@@ -120,7 +120,7 @@
       <workItem from="1607959413183" duration="1221000" />
       <workItem from="1607969055896" duration="12768000" />
       <workItem from="1608029495963" duration="24109000" />
-      <workItem from="1608106608026" duration="17390000" />
+      <workItem from="1608106608026" duration="23027000" />
     </task>
     <task id="LOCAL-00001" summary="incapsulated modul">
       <created>1607278443277</created>
@@ -220,7 +220,14 @@
       <option name="project" value="LOCAL" />
       <updated>1608068427471</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="add functional for setRepeatingEvent">
+      <created>1608144868445</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1608144868445</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -250,7 +257,8 @@
     <MESSAGE value="new module added" />
     <MESSAGE value="minor changes" />
     <MESSAGE value="Decorator for setEvent function" />
-    <option name="LAST_COMMIT_MESSAGE" value="Decorator for setEvent function" />
+    <MESSAGE value="add functional for setRepeatingEvent" />
+    <option name="LAST_COMMIT_MESSAGE" value="add functional for setRepeatingEvent" />
   </component>
   <component name="WindowStateProjectService">
     <state x="416" y="214" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1607343894227">
@@ -277,10 +285,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1515" height="177" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1607557110337" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1608068430494">
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1608144870379">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1608068430494" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1608144870379" />
     <state x="425" y="187" key="run.anything.popup" timestamp="1607458482509">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
