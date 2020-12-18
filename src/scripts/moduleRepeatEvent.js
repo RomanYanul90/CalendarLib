@@ -1,6 +1,7 @@
 (function () {
 
-    var daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday", 'saturday', 'sunday']
+    const daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday", 'saturday', 'sunday']
+    const oneDay = 24 * 60 * 60 * 1000
 
     function dateHandler(userDate) {
         var time = userDate.split(" ")[1];
@@ -19,21 +20,21 @@
     //     return date.join('.')
     // }
 
-    function nextDayDateCreate(currentDay,days) {
+    function nextDayDateCreate(currentDay, days) {
         currentDay = dateHandler(currentDay);
-        return new Date(Date.parse(currentDay) +days* 24 * 60 * 60 * 1000).toLocaleDateString() + " " + new Date(Date.parse(currentDay) + days* 24 * 60 * 60 * 1000).toTimeString().split(" ")[0]
+        return new Date(Date.parse(currentDay) + days * oneDay).toLocaleDateString() + " " + new Date(Date.parse(currentDay) + days * oneDay).toTimeString().split(" ")[0]
     }
 
     function daysCount(startDate, dayOfWeek) {
         var count = 0
         var currentDayOfWeek = dateHandler(startDate).getDay()
-        dayOfWeek = daysOfWeek.indexOf(dayOfWeek) + 1
+        dayOfWeek = daysOfWeek.indexOf(dayOfWeek) + 1//TODO
         if (dayOfWeek > currentDayOfWeek) {
             count = dayOfWeek - currentDayOfWeek
         } else {
             count = 7 - currentDayOfWeek + dayOfWeek
         }
-        return new Date(Date.parse(dateHandler(startDate)) + count * 24 * 60 * 60 * 1000).toLocaleDateString()+" "+new Date(Date.parse(dateHandler(startDate)) + count * 24 * 60 * 60 * 1000).toTimeString().split(" ")[0]
+        return new Date(Date.parse(dateHandler(startDate)) + count * 24 * 60 * 60 * 1000).toLocaleDateString() + " " + new Date(Date.parse(dateHandler(startDate)) + count * 24 * 60 * 60 * 1000).toTimeString().split(" ")[0]
     }
 
     //dayCount('23.12.2020',"monday")=============>"28.12.2020"
@@ -42,20 +43,21 @@
             if (period === "every day") {
                 var newCallback = function () {
                     callback();
-                    var nextDay = nextDayDateCreate(date,1);
+                    var nextDay = nextDayDateCreate(date, 1);
                     Calendar.setEvent(nextDay, event, newCallback);
                 }
-                return func(date, event, newCallback, "every day");
+                return func(date, event, newCallback);
             }
-            if (typeof(period) ==="string" && period!=="every day") {
+            if (typeof (period) === "string" && period !== "every day") {
                 var periodArray = period.split(",")
-                var newCallback = function () {
+                var newCallback = function (date) {
                     callback();
-                    var nextDay = nextDayDateCreate(date,7);
+                    var nextDay = nextDayDateCreate(date, 7);
                     Calendar.setEvent(nextDay, event, newCallback);
                 }
-                periodArray.forEach((el) => { return Calendar.setEvent(daysCount(date, el), event, newCallback)})
-
+                periodArray.forEach((el) => {
+                    return Calendar.setEvent(daysCount(date, el), event, newCallback)
+                })
             }
             return func(date, event, callback);
         }

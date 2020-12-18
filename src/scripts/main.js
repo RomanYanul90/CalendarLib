@@ -9,7 +9,7 @@
     var Events = [];
     var started = false;//TODO: uppercase?
 
-    function setEvent(date, event, callback) {
+    function setEvent(date, event, callback) {//TODO id?
 
         if (dateHandler(date) < new Date()) {
             console.log("The time you specified has already passed!");
@@ -57,31 +57,40 @@
         }, 1000)
     }
 
-    function getEventsList(startDay, endDay) {
+    function sortedByDateEventsList(arr) {
+        return arr.sort((a, b) => {
+            return a.date - b.date
+        })
+    }
 
+    function getEventsList(startDay, endDay) {
+        const oneDay = 24 * 60 * 60 * 1000;
+        const oneWeek = 7 * 24 * 60 * 60 * 1000;
+        const oneMonth = 30 * 24 * 60 * 60 * 1000;
+        var result = [];
         if (!startDay && !endDay) {
-            console.log(Events.sort());
+            result = Events
         }
         if (startDay && !endDay) {
             Events.forEach((el) => {
                 if (el.date.toDateString() === dateHandler(startDay).toDateString()) {
-                    console.log(el);
+                    result.push(el);
                 }
             })
         }
         if (startDay && endDay === 'week') {
             startDay = Date.parse(dateHandler(startDay).toDateString())
             Events.forEach((el) => {
-                if (Date.parse(el.date.toDateString()) >= startDay && Date.parse(el.date.toDateString()) <= startDay + 7 * 24 * 60 * 60 * 1000) {
-                    console.log(el);
+                if (Date.parse(el.date.toDateString()) >= startDay && Date.parse(el.date.toDateString()) <= startDay + oneWeek) {
+                    result.push(el);
                 }
             })
         }
         if (startDay && endDay === 'month') {
             startDay = Date.parse(dateHandler(startDay).toDateString());
             Events.forEach((el) => {
-                if (Date.parse(el.date.toDateString()) >= startDay && Date.parse(el.date.toDateString()) <= startDay + 30 * 24 * 60 * 60 * 1000) {
-                    console.log(el);
+                if (Date.parse(el.date.toDateString()) >= startDay && Date.parse(el.date.toDateString()) <= startDay + oneMonth) {
+                    result.push(el);
                 }
             })
         }
@@ -89,19 +98,20 @@
             startDay = Date.parse(dateHandler(startDay).toDateString());
             endDay = Date.parse(dateHandler(endDay).toDateString());
 
-            for (var i = startDay; i <= endDay; i = i + 24 * 60 * 60 * 1000) {
+            for (var i = startDay; i <= endDay; i = i + oneDay) {
                 Events.forEach((el) => {
                     if (el.date.toDateString() === new Date(i).toDateString()) {
-                        console.log(el);
+                        result.push(el);
                     }
                 })
             }
         }
+        console.log(sortedByDateEventsList(result));
     }
 
     function removeEvent(id) {
-        if(id==='all'){
-            Events=[];
+        if (id === 'all') {
+            Events = [];
         }
         Events = Events.filter(el => el.id !== id);
     }
@@ -126,7 +136,7 @@
         }
     }
 
-    function generateId(){
+    function generateId() {
         return Math.random().toString(36).substring(6)
     }
 
