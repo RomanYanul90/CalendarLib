@@ -14,30 +14,23 @@
         }
     }
 
-    // function dateChange(date) {
-    //     var date = date.split('/');
-    //     date[1] = date.splice(0, 1, date[1])[0];
-    //     return date.join('.')
-    // }
-
     function nextDayDateCreate(currentDay, days) {
         currentDay = dateHandler(currentDay);
         return new Date(Date.parse(currentDay) + days * oneDay).toLocaleDateString() + " " + new Date(Date.parse(currentDay) + days * oneDay).toTimeString().split(" ")[0]
     }
 
     function daysCount(startDate, dayOfWeek) {
-        var count = 0
-        var currentDayOfWeek = dateHandler(startDate).getDay()
-        dayOfWeek = daysOfWeek.indexOf(dayOfWeek) + 1//TODO
+        var count = 0;
+        const currentDayOfWeek = dateHandler(startDate).getDay();
+        dayOfWeek = daysOfWeek.indexOf(dayOfWeek) + 1//TODO 0-6 0-7 ?!
         if (dayOfWeek > currentDayOfWeek) {
-            count = dayOfWeek - currentDayOfWeek
+            count = dayOfWeek - currentDayOfWeek;
         } else {
-            count = 7 - currentDayOfWeek + dayOfWeek
+            count = 7 - currentDayOfWeek + dayOfWeek;
         }
-        return new Date(Date.parse(dateHandler(startDate)) + count * 24 * 60 * 60 * 1000).toLocaleDateString() + " " + new Date(Date.parse(dateHandler(startDate)) + count * 24 * 60 * 60 * 1000).toTimeString().split(" ")[0]
+        return new Date(Date.parse(dateHandler(startDate)) + count * oneDay).toLocaleDateString() + " " + new Date(Date.parse(dateHandler(startDate)) + count * oneDay).toTimeString().split(" ")[0]
     }
 
-    //dayCount('23.12.2020',"monday")=============>"28.12.2020"
     function setEventDecorator(func) {
         return function (date, event, callback, period) {
             if (period === "every day") {
@@ -48,17 +41,17 @@
                 }
                 return func(date, event, newCallback);
             }
-            if (typeof (period) === "string" && period !== "every day") {
-                var periodArray = period.split(",")
-                var newCallback = function (date) {
-                    callback();
-                    var nextDay = nextDayDateCreate(date, 7);
-                    Calendar.setEvent(nextDay, event, newCallback);
-                }
-                periodArray.forEach((el) => {
-                    return Calendar.setEvent(daysCount(date, el), event, newCallback)
-                })
-            }
+            // if (typeof (period) === "string" && period !== "every day") {
+            //     var periodArray = period.split(",")
+            //     var newCallback = function (date) {
+            //         callback();
+            //         var nextDay = nextDayDateCreate(date, 7);
+            //         Calendar.setEvent(nextDay, event, newCallback);
+            //     }
+            //     periodArray.forEach((el) => {
+            //         return Calendar.setEvent(daysCount(date, el), event, newCallback)
+            //     })
+            // }
             return func(date, event, callback);
         }
     }

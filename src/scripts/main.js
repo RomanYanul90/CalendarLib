@@ -9,19 +9,18 @@
     var Events = [];
     var started = false;//TODO: uppercase?
 
-    function setEvent(date, event, callback) {//TODO id?
+    function setEvent(event) {//TODO id?
 
-        if (dateHandler(date) < new Date()) {
+        if (dateHandler(event.date) < new Date()) {
             console.log("The time you specified has already passed!");
-            callback();
+            event.callback();
             return;
         }
 
         var newEvent = {
-            id: generateId(),
-            event,
-            date: dateHandler(date),
-            callback,
+            id: event.id ? event.id : generateId(),
+            ...event,
+            date: dateHandler(event.date),
             eventIsDone: false
         };
 
