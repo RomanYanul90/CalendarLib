@@ -3,6 +3,10 @@
     const daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday", 'saturday', 'sunday']
     const oneDay = 24 * 60 * 60 * 1000
 
+    function generateId() {
+        return Math.random().toString(36).substring(6)
+    }
+
     function dateHandler(userDate) {
         var time = userDate.split(" ")[1];
         var date = userDate.split(" ")[0].split('.');
@@ -32,27 +36,17 @@
     }
 
     function setEventDecorator(func) {
-        return function (date, event, callback, period) {
-            if (period === "every day") {
+        return function (event) {
+            if (event.period === "every day") {
+                const id = generateId();
                 var newCallback = function () {
-                    callback();
-                    var nextDay = nextDayDateCreate(date, 1);
-                    Calendar.setEvent(nextDay, event, newCallback);
+                    event.callback();
+                    var nextDay = nextDayDateCreate(event.date, 1);
+                    Calendar.setEvent({id, ...event, date: nextDay, callback: newCallback});
                 }
-                return func(date, event, newCallback);
+                return func({id, ...event, callback: newCallback});
             }
-            // if (typeof (period) === "string" && period !== "every day") {
-            //     var periodArray = period.split(",")
-            //     var newCallback = function (date) {
-            //         callback();
-            //         var nextDay = nextDayDateCreate(date, 7);
-            //         Calendar.setEvent(nextDay, event, newCallback);
-            //     }
-            //     periodArray.forEach((el) => {
-            //         return Calendar.setEvent(daysCount(date, el), event, newCallback)
-            //     })
-            // }
-            return func(date, event, callback);
+            return func(event);
         }
     }
 
