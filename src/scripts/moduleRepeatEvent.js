@@ -46,21 +46,31 @@
                 }
                 return func({id, ...event, callback: newCallback});
             }
+
             if (event.period && event.period !== "every day") {
-                const periodArray = event.period.split(',')
-                const startDate=event.date
+                var periodArray = [];
+                var startDate = event.date
                 const id = generateId();
+
+                if (event.period.split('').includes(',')) {
+                    event.period.split(',').forEach(el => periodArray.push(el));
+                } else {
+                    periodArray.push(event.period);
+                }
+
                 var newCallback = function () {
                     event.callback();
                     var nextDay = nextDayDateCreate(event.date, 7);
-                    Calendar.setEvent({id, ...event, date: nextDay, callback: newCallback});
+                    // Calendar.setEvent({id, ...event, date: nextDay, callback: newCallback});
+                    Calendar.setEvent({id, date: nextDay, event: event.event,callback: newCallback});
+
                 }
-                periodArray.forEach((el)=>{
-                    Calendar.setEvent({id,date:daysCount(startDate,el),event:event.event, callback: newCallback})
+                periodArray.forEach((el) => {
+                   return  func({id, date: daysCount(startDate, el), event: event.event, callback: newCallback})
                 })
-                return func({id, ...event, callback: newCallback});
+                // return func({id, ...event, callback: newCallback});
             }
-             return func(event);
+            return func(event);
         }
     }
 
