@@ -46,7 +46,21 @@
                 }
                 return func({id, ...event, callback: newCallback});
             }
-            return func(event);
+            if (event.period && event.period !== "every day") {
+                const periodArray = event.period.split(',')
+                const startDate=event.date
+                const id = generateId();
+                var newCallback = function () {
+                    event.callback();
+                    var nextDay = nextDayDateCreate(event.date, 7);
+                    Calendar.setEvent({id, ...event, date: nextDay, callback: newCallback});
+                }
+                periodArray.forEach((el)=>{
+                    Calendar.setEvent({id,date:daysCount(startDate,el),event:event.event, callback: newCallback})
+                })
+                return func({id, ...event, callback: newCallback});
+            }
+             return func(event);
         }
     }
 
