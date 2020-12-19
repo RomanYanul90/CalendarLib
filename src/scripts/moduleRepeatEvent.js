@@ -28,7 +28,7 @@
     function daysCount(startDate, dayOfWeek) {
         var count = 0
         var currentDayOfWeek = dateHandler(startDate).getDay()
-        dayOfWeek = daysOfWeek.indexOf(dayOfWeek) + 1//TODO
+        dayOfWeek = daysOfWeek.indexOf(dayOfWeek) + 1
         if (dayOfWeek > currentDayOfWeek) {
             count = dayOfWeek - currentDayOfWeek
         } else {
@@ -55,6 +55,7 @@
                     Calendar.setEvent(nextDay, event, newCallback);
                 }
                 periodArray.forEach((el) => {
+                    console.log(daysCount(date, el))
                     return Calendar.setEvent(daysCount(date, el), event, newCallback);
                 })
             }
