@@ -34,10 +34,9 @@
         } else {
             count = 7 - currentDayOfWeek + dayOfWeek
         }
-        return new Date(Date.parse(dateHandler(startDate)) + count * 24 * 60 * 60 * 1000).toLocaleDateString() + " " + new Date(Date.parse(dateHandler(startDate)) + count * 24 * 60 * 60 * 1000).toTimeString().split(" ")[0]
+        return new Date(Date.parse(dateHandler(startDate)) + count * oneDay).toLocaleDateString() + " " + new Date(Date.parse(dateHandler(startDate)) + count * oneDay).toTimeString().split(" ")[0]
     }
 
-    //dayCount('23.12.2020',"monday")=============>"28.12.2020"
     function setEventDecorator(func) {
         return function (date, event, callback, period) {
             if (period === "every day") {
@@ -49,14 +48,14 @@
                 return func(date, event, newCallback);
             }
             if (typeof (period) === "string" && period !== "every day") {
-                var periodArray = period.split(",")
+                const periodArray = period.split(",");
                 var newCallback = function (date) {
                     callback();
                     var nextDay = nextDayDateCreate(date, 7);
                     Calendar.setEvent(nextDay, event, newCallback);
                 }
                 periodArray.forEach((el) => {
-                    return Calendar.setEvent(daysCount(date, el), event, newCallback)
+                    return Calendar.setEvent(daysCount(date, el), event, newCallback);
                 })
             }
             return func(date, event, callback);
