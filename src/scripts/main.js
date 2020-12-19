@@ -109,11 +109,17 @@
         console.log(sortedByDateEventsList(result));
     }
 
-    function removeEvent(id) {
-        if (id === 'all') {
+    function removeEvent(eventToRemove) {
+        if (typeof (eventToRemove) === "object" && eventToRemove.id) {
+            Events = Events.filter(el => el.id !== eventToRemove.id);
+
+        }
+        if (typeof (eventToRemove) === "object" && eventToRemove.name) {
+            Events = Events.filter(el => el.event !== eventToRemove.name);
+        }
+        if (eventToRemove === 'all') {
             Events = [];
         }
-        Events = Events.filter(el => el.id !== id);
     }
 
     function changeEvent(id, newEventName, newDate) {
