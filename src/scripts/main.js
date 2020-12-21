@@ -6,7 +6,9 @@
     }
 })(typeof window !== undefined ? window : this, (global) => {
     'use strict'
-    var Events = [];
+    var Events = Object.values(localStorage).map((el)=>{
+        return JSON.parse(el)
+    });
     var started = false;
 
     function setEvent(event) {
@@ -31,6 +33,7 @@
         }
 
         Events.push(newEvent);
+        localStorage.setItem(newEvent.id,JSON.stringify(newEvent))
 
         if (!started) {
             console.log('Running');
