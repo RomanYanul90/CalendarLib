@@ -1,10 +1,10 @@
 (function () {
 
-    const daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday", 'saturday', 'sunday']
-    const oneDay = 24 * 60 * 60 * 1000
+    const daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday", 'saturday', 'sunday'];
+    const oneDay = 24 * 60 * 60 * 1000;
 
     function generateId() {
-        return Math.random().toString(36).substring(6)
+        return Math.random().toString(36).substring(6);
     }
 
     function dateHandler(userDate) {
@@ -20,13 +20,14 @@
 
     function nextDayDateCreate(currentDay, days) {
         currentDay = dateHandler(currentDay);
+        //TODO
         return new Date(Date.parse(currentDay) + days * oneDay).toLocaleDateString() + " " + new Date(Date.parse(currentDay) + days * oneDay).toTimeString().split(" ")[0]
     }
 
     function daysCount(startDate, dayOfWeek) {
         var count = 0;
         const currentDayOfWeek = dateHandler(startDate).getDay();
-        dayOfWeek = daysOfWeek.indexOf(dayOfWeek) + 1//TODO 0-6 0-7 ?!
+        dayOfWeek = daysOfWeek.indexOf(dayOfWeek) + 1//TODO
         if (dayOfWeek > currentDayOfWeek) {
             count = dayOfWeek - currentDayOfWeek;
         } else {
@@ -48,8 +49,8 @@
             }
 
             if (event.period && event.period !== "every day") {
-                var periodArray = [];
-                var startDate = event.date
+                const periodArray = [];
+                const startDate = event.date;
                 const id = generateId();
 
                 if (event.period.split('').includes(',')) {
@@ -63,7 +64,6 @@
                     var nextDay = nextDayDateCreate(event.date, 7);
                     // Calendar.setEvent({id, ...event, date: nextDay, callback: newCallback});
                     Calendar.setEvent({id, date: nextDay, event: event.event,callback: newCallback});
-
                 }
                 periodArray.forEach((el) => {
                    return  func({id, date: daysCount(startDate, el), event: event.event, callback: newCallback})

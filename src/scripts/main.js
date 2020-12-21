@@ -7,9 +7,9 @@
 })(typeof window !== undefined ? window : this, (global) => {
     'use strict'
     var Events = [];
-    var started = false;//TODO: uppercase?
+    var started = false;
 
-    function setEvent(event) {//TODO id?
+    function setEvent(event) {
 
         if (dateHandler(event.date) < new Date()) {
             console.log("The time you specified has already passed!");
@@ -19,7 +19,7 @@
 
         var newEvent = {
             id: event.id ? event.id : generateId(),
-            ...event,
+            ...event,//TODO
             date: dateHandler(event.date),
             eventIsDone: false
         };
@@ -67,6 +67,7 @@
         const oneWeek = 7 * 24 * 60 * 60 * 1000;
         const oneMonth = 30 * 24 * 60 * 60 * 1000;
         var result = [];
+
         if (!startDay && !endDay) {
             result = Events
         }
@@ -105,14 +106,19 @@
                 })
             }
         }
-        console.log(sortedByDateEventsList(result));
+        return (sortedByDateEventsList(result));
     }
 
-    function removeEvent(id) {
-        if (id === 'all') {
+    function removeEvent(eventToRemove) {
+        if (typeof (eventToRemove) === "object" && eventToRemove.id) {
+            Events = Events.filter(el => el.id !== eventToRemove.id);
+        }
+        if (typeof (eventToRemove) === "object" && eventToRemove.name) {
+            Events = Events.filter(el => el.event !== eventToRemove.name);
+        }
+        if (eventToRemove === 'all') {
             Events = [];
         }
-        Events = Events.filter(el => el.id !== id);
     }
 
     function changeEvent(id, newEventName, newDate) {
