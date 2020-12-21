@@ -113,9 +113,16 @@
     function removeEvent(eventToRemove) {
         if (typeof (eventToRemove) === "object" && eventToRemove.id) {
             Events = Events.filter(el => el.id !== eventToRemove.id);
+
         }
         if (typeof (eventToRemove) === "object" && eventToRemove.name) {
             Events = Events.filter(el => el.eventName !== eventToRemove.name);
+
+
+        }
+        if (typeof (eventToRemove) === "object" && eventToRemove.name) {
+            Events = Events.filter(el => el.event !== eventToRemove.name);
+
         }
         if (eventToRemove === 'all') {
             Events = [];

@@ -21,6 +21,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3540f3bf-9683-45ee-9822-39d88844f77e" name="Default Changelist" comment="minor changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -245,49 +246,7 @@
       <option name="project" value="LOCAL" />
       <updated>1608151049435</updated>
     </task>
-    <task id="LOCAL-00017" summary="sort Events output by date and time">
-      <created>1608321896810</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1608321896810</updated>
-    </task>
-    <task id="LOCAL-00018" summary="correct work of repeating events by days of the week">
-      <created>1608402244112</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1608402244112</updated>
-    </task>
-    <task id="LOCAL-00019" summary="correct work of repeating events by days of the week">
-      <created>1608420227990</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1608420227990</updated>
-    </task>
-    <task id="LOCAL-00020" summary="minor changes">
-      <created>1608472668182</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1608472668182</updated>
-    </task>
-    <task id="LOCAL-00021" summary="minor changes">
-      <created>1608551905965</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1608551905965</updated>
-    </task>
-    <task id="LOCAL-00022" summary="minor changes">
-      <created>1608554981458</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1608554981458</updated>
-    </task>
-    <option name="localTasksCounter" value="23" />
+
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -318,8 +277,7 @@
     <MESSAGE value="Decorator for setEvent function" />
     <MESSAGE value="add functional for setRepeatingEvent" />
     <MESSAGE value="add functional for setRepeatingEvent by weeks day" />
-    <MESSAGE value="sort Events output by date and time" />
-    <MESSAGE value="correct work of repeating events by days of the week" />
+
     <MESSAGE value="minor changes" />
     <option name="LAST_COMMIT_MESSAGE" value="minor changes" />
   </component>
@@ -328,10 +286,7 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="416" y="214" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1607343894227" />
-    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1608397585712">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1608397585712" />
+
     <state width="1515" height="177" key="GridCell.Tab.0.bottom" timestamp="1607557110337">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -348,15 +303,7 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1515" height="177" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1607557110337" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1608554983353">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1608554983353" />
-    <state x="550" y="125" key="git4idea.branch.GitSmartOperationDialog" timestamp="1608474417556">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="550" y="125" key="git4idea.branch.GitSmartOperationDialog/0.0.1536.824@0.0.1536.824" timestamp="1608474417556" />
-    <state x="425" y="187" key="run.anything.popup" timestamp="1608545977682">
+
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1608545977682" />

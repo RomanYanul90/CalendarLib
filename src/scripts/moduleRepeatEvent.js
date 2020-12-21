@@ -26,17 +26,29 @@
     }
 
     function daysCount(startDate, dayOfWeek) {
+
         var count = 0;
         const currentDayOfWeek = dateHandler(startDate).getDay();
         var dayIndex = daysOfWeek.indexOf(dayOfWeek) + 1
         if (dayIndex > currentDayOfWeek) {
             count = dayIndex - currentDayOfWeek;
+
+        var count = 0
+        var currentDayOfWeek = dateHandler(startDate).getDay()
+        dayOfWeek = daysOfWeek.indexOf(dayOfWeek) + 1
+        if (dayOfWeek > currentDayOfWeek) {
+            count = dayOfWeek - currentDayOfWeek
+
         } else {
             count = 7 - currentDayOfWeek + dayIndex;
         }
+
         var dateParams = new Date(Date.parse(dateHandler(startDate)) + count * oneDay).toLocaleDateString();
         var timeParams = new Date(Date.parse(dateHandler(startDate)) + count * oneDay).toTimeString().split(" ")[0]
         return dateParams + " " + timeParams;
+
+        return new Date(Date.parse(dateHandler(startDate)) + count * oneDay).toLocaleDateString() + " " + new Date(Date.parse(dateHandler(startDate)) + count * oneDay).toTimeString().split(" ")[0]
+
     }
 
     function setEventDecorator(func) {
@@ -50,6 +62,7 @@
                 }
                 return func({id, ...event, callback: newCallback});
             }
+
 
             if (event.period && event.period !== "every day") {
                 var periodArray = [];
@@ -69,6 +82,18 @@
                 }
                 periodArray.forEach((el) => {
                    return  func({id, date: daysCount(startDate, el), name: event.name, callback: newCallback});
+
+            if (typeof (period) === "string" && period !== "every day") {
+                const periodArray = period.split(",");
+                var newCallback = function (date) {
+                    callback();
+                    var nextDay = nextDayDateCreate(date, 7);
+                    Calendar.setEvent(nextDay, event, newCallback);
+                }
+                periodArray.forEach((el) => {
+                    console.log(daysCount(date, el))
+                    return Calendar.setEvent(daysCount(date, el), event, newCallback);
+
                 })
             }
             return func(event);
