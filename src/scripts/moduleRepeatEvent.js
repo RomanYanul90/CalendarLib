@@ -1,7 +1,7 @@
 (function () {
 
-    const daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday", 'saturday', 'sunday'];
-    const oneDay = 24 * 60 * 60 * 1000;
+    var daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday", 'saturday', 'sunday'];
+    var oneDay = 24 * 60 * 60 * 1000;
 
     function generateId() {
         return Math.random().toString(36).substring(6);
@@ -19,39 +19,42 @@
     }
 
     function nextDayDateCreate(currentDay, days) {
-        currentDay = dateHandler(currentDay);
-        //TODO
-        return new Date(Date.parse(currentDay) + days * oneDay).toLocaleDateString() + " " + new Date(Date.parse(currentDay) + days * oneDay).toTimeString().split(" ")[0]
+        var currentDate = dateHandler(currentDay);
+        var dateParams = new Date(Date.parse(currentDate) + days * oneDay).toLocaleDateString();
+        var timeParams = new Date(Date.parse(currentDate) + days * oneDay).toTimeString().split(" ")[0];
+        return dateParams + " " + timeParams;
     }
 
     function daysCount(startDate, dayOfWeek) {
         var count = 0;
         const currentDayOfWeek = dateHandler(startDate).getDay();
-        dayOfWeek = daysOfWeek.indexOf(dayOfWeek) + 1//TODO
-        if (dayOfWeek > currentDayOfWeek) {
-            count = dayOfWeek - currentDayOfWeek;
+        var dayIndex = daysOfWeek.indexOf(dayOfWeek) + 1
+        if (dayIndex > currentDayOfWeek) {
+            count = dayIndex - currentDayOfWeek;
         } else {
-            count = 7 - currentDayOfWeek + dayOfWeek;
+            count = 7 - currentDayOfWeek + dayIndex;
         }
-        return new Date(Date.parse(dateHandler(startDate)) + count * oneDay).toLocaleDateString() + " " + new Date(Date.parse(dateHandler(startDate)) + count * oneDay).toTimeString().split(" ")[0]
+        var dateParams = new Date(Date.parse(dateHandler(startDate)) + count * oneDay).toLocaleDateString();
+        var timeParams = new Date(Date.parse(dateHandler(startDate)) + count * oneDay).toTimeString().split(" ")[0]
+        return dateParams + " " + timeParams;
     }
 
     function setEventDecorator(func) {
         return function (event) {
             if (event.period === "every day") {
-                const id = generateId();
+                var id = generateId();
                 var newCallback = function () {
                     event.callback();
                     var nextDay = nextDayDateCreate(event.date, 1);
-                    Calendar.setEvent({id, ...event, date: nextDay, callback: newCallback});
+                    Calendar.setEvent({id, name:event.name, date: nextDay, callback: newCallback});
                 }
                 return func({id, ...event, callback: newCallback});
             }
 
             if (event.period && event.period !== "every day") {
-                const periodArray = [];
-                const startDate = event.date;
-                const id = generateId();
+                var periodArray = [];
+                var startDate = event.date;
+                var id = generateId();
 
                 if (event.period.split('').includes(',')) {
                     event.period.split(',').forEach(el => periodArray.push(el));
@@ -62,13 +65,11 @@
                 var newCallback = function () {
                     event.callback();
                     var nextDay = nextDayDateCreate(event.date, 7);
-                    // Calendar.setEvent({id, ...event, date: nextDay, callback: newCallback});
-                    Calendar.setEvent({id, date: nextDay, event: event.event,callback: newCallback});
+                    Calendar.setEvent({id, date: nextDay, name: event.name,callback: newCallback});
                 }
                 periodArray.forEach((el) => {
-                   return  func({id, date: daysCount(startDate, el), event: event.event, callback: newCallback})
+                   return  func({id, date: daysCount(startDate, el), name: event.name, callback: newCallback});
                 })
-                // return func({id, ...event, callback: newCallback});
             }
             return func(event);
         }

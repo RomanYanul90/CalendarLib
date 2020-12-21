@@ -19,12 +19,13 @@
 
         var newEvent = {
             id: event.id ? event.id : generateId(),
-            ...event,//TODO
             date: dateHandler(event.date),
-            eventIsDone: false
+            eventName:event.name,
+            eventIsDone: false,
+            callback:event.callback
         };
 
-        if (Events.some(el => el.event === newEvent.event && el.date.toString() === newEvent.date.toString())) {
+        if (Events.some(el => el.eventName === newEvent.eventName && el.date.toString() === newEvent.date.toString())) {
             console.log("An event with the same name and time already exists");
             return;
         }
@@ -58,7 +59,7 @@
 
     function sortedByDateEventsList(arr) {
         return arr.sort((a, b) => {
-            return a.date - b.date
+            return a.date - b.date;
         })
     }
 
@@ -69,7 +70,7 @@
         var result = [];
 
         if (!startDay && !endDay) {
-            result = Events
+            result = Events;
         }
         if (startDay && !endDay) {
             Events.forEach((el) => {
@@ -114,7 +115,7 @@
             Events = Events.filter(el => el.id !== eventToRemove.id);
         }
         if (typeof (eventToRemove) === "object" && eventToRemove.name) {
-            Events = Events.filter(el => el.event !== eventToRemove.name);
+            Events = Events.filter(el => el.eventName !== eventToRemove.name);
         }
         if (eventToRemove === 'all') {
             Events = [];
@@ -124,7 +125,7 @@
     function changeEvent(id, newEventName, newDate) {
         return Events.find((el) => {
             if (el.id === id) {
-                newEventName ? el.event = newEventName : el.event;
+                newEventName ? el.eventName = newEventName : el.eventName;
                 newDate ? el.date = dateHandler(newDate) : el.date;
             }
         })
