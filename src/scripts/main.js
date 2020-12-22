@@ -120,28 +120,34 @@
     }
 
     function removeEvent(eventToRemove) {
+        var result = []
         if (typeof (eventToRemove) === "object" && eventToRemove.id) {
-            Events = Events.filter(function (el) {
-                el.id !== eventToRemove.id
+            Events.forEach(function (el) {
+                if (el.id !== eventToRemove.id) {
+                    result.push(el)
+                }
+            });
+        }
+        if (typeof (eventToRemove) === "object" && eventToRemove.name) {
+            result = Events.map(function (el) {
+                if (el.eventName !== eventToRemove.name) {
+                    return el
+                }
             });
 
         }
         if (typeof (eventToRemove) === "object" && eventToRemove.name) {
-            Events = Events.filter(function (el) {
-                el.eventName !== eventToRemove.name
-            });
-
-
-        }
-        if (typeof (eventToRemove) === "object" && eventToRemove.name) {
-            Events = Events.filter(function (el) {
-                el.event !== eventToRemove.name
+            result = Events.map(function (el) {
+                if (el.event !== eventToRemove.name) {
+                    return el
+                }
             });
 
         }
         if (eventToRemove === 'all') {
-            Events = [];
+            result = [];
         }
+        Events = result
     }
 
     function changeEvent(id, newEventName, newDate) {
