@@ -34,29 +34,28 @@
             dateParams = nexDay.toLocaleDateString().split('.').join('/');
         }
         timeParams = nexDay.toTimeString().split(" ")[0];
-        console.log(dateParams + " " + timeParams);
+        // console.log(dateParams + " " + timeParams);
         return dateParams + " " + timeParams;
-
-        // // var currentDate = dateHandler(currentDay);
-        // var dateParams = new Date(Date.parse(dateHandler(currentDay)) + days * oneDay).toLocaleDateString()
-        //
-        // var timeParams = new Date(Date.parse(dateHandler(currentDay)) + days * oneDay).toTimeString().split(" ")[0];
-        // console.log('Date params', dateParams);
-        // console.log('Time params', timeParams);
-        // return dateParams + " " + timeParams;
     }
 
     function daysCount(startDate, dayOfWeek) {
+        var dateParams;
+        var timeParams;
         var count = 0;
         const currentDayOfWeek = dateHandler(startDate).getDay();
-        var dayIndex = daysOfWeek.indexOf(dayOfWeek) + 1
+        var dayIndex = daysOfWeek.indexOf(dayOfWeek) + 1;
         if (dayIndex > currentDayOfWeek) {
             count = dayIndex - currentDayOfWeek;
         } else {
             count = 7 - currentDayOfWeek + dayIndex;
         }
-        var dateParams = new Date(Date.parse(dateHandler(startDate)) + count * oneDay).toLocaleDateString();
-        var timeParams = new Date(Date.parse(dateHandler(startDate)) + count * oneDay).toTimeString().split(" ")[0]
+        var dayAfterOneWeek = new Date(Date.parse(dateHandler(startDate)) + count * oneDay);
+        if (dayAfterOneWeek.toLocaleDateString().split('').indexOf('/') > -1) {
+            dateParams = changeTime(dayAfterOneWeek.toLocaleDateString());
+        } else {
+            dateParams = dayAfterOneWeek.toLocaleDateString().split('.').join('/');
+        }
+        timeParams = dayAfterOneWeek.toTimeString().split(" ")[0];
         return dateParams + " " + timeParams;
     }
 
@@ -67,7 +66,7 @@
                 var newCallback = function () {
                     event.callback();
                     var nextDay = nextDayDateCreate(event.date, 1);
-                    console.log("NextDay in EveryDay", nextDay)
+                    // console.log("NextDay in EveryDay", nextDay)
                     Calendar.setEvent({id: id, name: event.name, date: nextDay, callback: newCallback});
                 }
                 return func({id: id, name: event.name, date: event.date, callback: newCallback});
@@ -78,7 +77,7 @@
                 var startDate = event.date;
                 var id = generateId();
 
-                if (event.period.split('').includes(',')) {
+                if (event.period.split('').indexOf(',')>-1) {
                     event.period.split(',').forEach(function (el) {
                         periodArray.push(el)
                     });
