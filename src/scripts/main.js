@@ -19,7 +19,6 @@
 
         var newEvent = {
             id: event.id ? event.id : generateId(),
-            // date: typeof (event.date) === "object" ? event.date : dateHandler(event.date),
             date: dateHandler(event.date),
             eventName: event.name,
             eventIsDone: false,
@@ -73,13 +72,20 @@
     }
 
     function getEventsList(startDay, endDay) {
-        const oneDay = 24 * 60 * 60 * 1000;
-        const oneWeek = 7 * 24 * 60 * 60 * 1000;
-        const oneMonth = 30 * 24 * 60 * 60 * 1000;
+        var oneDay = 24 * 60 * 60 * 1000;
+        var oneWeek = 7 * 24 * 60 * 60 * 1000;
+        var oneMonth = 30 * 24 * 60 * 60 * 1000;
         var result = [];
+        var parsedStartDay;
+
+        if(startDay){
+            parsedStartDay = Date.parse(dateHandler(startDay).toDateString());
+        }
 
         if (!startDay && !endDay) {
-            result = Events;
+            result = Events.map(function (el) {
+                return el
+            });
         }
         if (startDay && !endDay) {
             Events.forEach(function (el) {
@@ -88,27 +94,25 @@
                 }
             })
         }
+
         if (startDay && endDay === 'week') {
-            startDay = Date.parse(dateHandler(startDay).toDateString())
             Events.forEach(function (el) {
-                if (Date.parse(el.date.toDateString()) >= startDay && Date.parse(el.date.toDateString()) <= startDay + oneWeek) {
+                if (Date.parse(el.date.toDateString()) >= parsedStartDay && Date.parse(el.date.toDateString()) <= parsedStartDay + oneWeek) {
                     result.push(el);
                 }
             })
         }
         if (startDay && endDay === 'month') {
-            startDay = Date.parse(dateHandler(startDay).toDateString());
             Events.forEach(function (el) {
-                if (Date.parse(el.date.toDateString()) >= startDay && Date.parse(el.date.toDateString()) <= startDay + oneMonth) {
+                if (Date.parse(el.date.toDateString()) >= parsedStartDay && Date.parse(el.date.toDateString()) <= parsedStartDay + oneMonth) {
                     result.push(el);
                 }
             })
         }
         if (startDay && endDay && endDay !== 'week' && endDay !== 'month') {
-            startDay = Date.parse(dateHandler(startDay).toDateString());
-            endDay = Date.parse(dateHandler(endDay).toDateString());
+            var parsedEndDay = Date.parse(dateHandler(endDay).toDateString());
 
-            for (var i = startDay; i <= endDay; i = i + oneDay) {
+            for (var i = parsedStartDay; i <= parsedEndDay; i = i + oneDay) {
                 Events.forEach(function (el) {
                     if (el.date.toDateString() === new Date(i).toDateString()) {
                         result.push(el);
@@ -119,39 +123,24 @@
         return (sortedByDateEventsList(result));
     }
 
-    function removeEvent(eventToRemove) {
-        var result = []
-        if (typeof (eventToRemove) === "object" && eventToRemove.id) {
+    function removeEvent(id) {
+        var result = [];
+
+        if (id === "all") {
+            Events = [];
+        } else {
             Events.forEach(function (el) {
-                if (el.id !== eventToRemove.id) {
-                    result.push(el)
+                if (el.id !== id) {
+                    result.push(el);
                 }
-            });
+            })
+            Events = result;
         }
-        if (typeof (eventToRemove) === "object" && eventToRemove.name) {
-            result = Events.map(function (el) {
-                if (el.eventName !== eventToRemove.name) {
-                    return el
-                }
-            });
 
-        }
-        if (typeof (eventToRemove) === "object" && eventToRemove.name) {
-            result = Events.map(function (el) {
-                if (el.event !== eventToRemove.name) {
-                    return el
-                }
-            });
-
-        }
-        if (eventToRemove === 'all') {
-            result = [];
-        }
-        Events = result
     }
 
     function changeEvent(id, newEventName, newDate) {
-        return Events.find(function (el) {
+        return Events.forEach(function (el) {
             if (el.id === id) {
                 newEventName ? el.eventName = newEventName : el.eventName;
                 newDate ? el.date = dateHandler(newDate) : el.date;
@@ -171,7 +160,7 @@
     }
 
     function generateId() {
-        return Math.random().toString(36).substring(6)
+        return Math.random().toString(36).substring(6);
     }
 
     global.Calendar = {

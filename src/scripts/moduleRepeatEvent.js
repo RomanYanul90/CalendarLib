@@ -1,5 +1,4 @@
 (function () {
-
     var daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday", 'saturday', 'sunday'];
     var oneDay = 24 * 60 * 60 * 1000;
 
@@ -66,7 +65,6 @@
                 var newCallback = function () {
                     event.callback();
                     var nextDay = nextDayDateCreate(event.date, 1);
-                    // console.log("NextDay in EveryDay", nextDay)
                     Calendar.setEvent({id: id, name: event.name, date: nextDay, callback: newCallback});
                 }
                 return func({id: id, name: event.name, date: event.date, callback: newCallback});
