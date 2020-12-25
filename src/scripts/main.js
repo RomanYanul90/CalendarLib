@@ -6,9 +6,17 @@
     }
 })(typeof window !== undefined ? window : this, (global) => {
     'use strict'
-    var Events = Object.values(localStorage).map((el)=>{
+    window.onload = function () {
+        console.log("Loaded")
+        console.log("Number of events: ",Events.length)
+        console.log("Running")
+
+        timeCheck()
+    }
+    var Events = Object.values(localStorage).map((el) => {
         return JSON.parse(el)
     });
+
     var started = false;
 
     function setEvent(event) {
@@ -22,9 +30,9 @@
         var newEvent = {
             id: event.id ? event.id : generateId(),
             date: dateHandler(event.date),
-            eventName:event.name,
+            eventName: event.name,
             eventIsDone: false,
-            callback:event.callback
+            callback: event.callback
         };
 
         if (Events.some(el => el.eventName === newEvent.eventName && el.date.toString() === newEvent.date.toString())) {
@@ -33,7 +41,8 @@
         }
 
         Events.push(newEvent);
-        localStorage.setItem(newEvent.id,JSON.stringify(newEvent))
+        // console.log(newEvent.callback.toString())
+        localStorage.setItem(newEvent.id, JSON.stringify({...newEvent, callback: newEvent.callback.toString()}))
 
         if (!started) {
             console.log('Running');
@@ -50,10 +59,20 @@
             return;
         }
         Events.forEach((el) => {
-            if (el.eventIsDone === false && el.date.toString() === new Date().toString()) {
-                el.callback();
-                el.eventIsDone = true;
+            if (el.eventIsDone === false && Date.parse(el.date) <= Date.parse(new Date().toString())) {
+                if (typeof (el.callback) === 'string') {
+                    var callbackFromStorage = eval('(' + el.callback + ')');
+                    callbackFromStorage();
+                    el.eventIsDone = true;
+                    localStorage.removeItem(el.id)
+                    localStorage.setItem(el.id,JSON.stringify({...el,callback: callbackFromStorage.toString()}))
+                }
+                if(typeof (el.callback) === 'function'){
+                    el.callback();
+                    el.eventIsDone = true;
+                }
             }
+
         })
         setTimeout(() => {
             timeCheck()
