@@ -7,11 +7,10 @@
 })(typeof window !== undefined ? window : this, (global) => {
     'use strict'
     window.onload = function () {
-        console.log("Loaded")
-        console.log("Number of events: ",Events.length)
-        console.log("Running")
-
-        timeCheck()
+        console.log("Loaded");
+        console.log("Number of events: ", Events.length);
+        console.log("Running");
+        timeCheck();
     }
     var Events = Object.values(localStorage).map((el) => {
         return JSON.parse(el)
@@ -42,7 +41,11 @@
 
         Events.push(newEvent);
         // console.log(newEvent.callback.toString())
-        localStorage.setItem(newEvent.id, JSON.stringify({...newEvent, callback: newEvent.callback.toString()}))
+        localStorage.setItem(newEvent.id, JSON.stringify({
+            ...newEvent,
+            date: newEvent.date.toString(),
+            callback: newEvent.callback.toString()
+        }))
 
         if (!started) {
             console.log('Running');
@@ -58,16 +61,17 @@
             console.log('All events are completed');
             return;
         }
+
         Events.forEach((el) => {
             if (el.eventIsDone === false && Date.parse(el.date) <= Date.parse(new Date().toString())) {
                 if (typeof (el.callback) === 'string') {
                     var callbackFromStorage = eval('(' + el.callback + ')');
-                    callbackFromStorage();
                     el.eventIsDone = true;
-                    localStorage.removeItem(el.id)
-                    localStorage.setItem(el.id,JSON.stringify({...el,callback: callbackFromStorage.toString()}))
+                    localStorage[el.id] = JSON.stringify({...el, callback: callbackFromStorage.toString()});
+                    console.log("The time of " + el.eventName.toUpperCase() + " event has passed!")
+                    callbackFromStorage();
                 }
-                if(typeof (el.callback) === 'function'){
+                if (typeof (el.callback) === 'function') {
                     el.callback();
                     el.eventIsDone = true;
                 }
