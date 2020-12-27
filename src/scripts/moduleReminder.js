@@ -27,17 +27,17 @@
             eventsCopy.forEach(function (el) {
                 if (reminder.id === "all") {
                     Calendar.setEvent({
-                        id: el.id + "Remind",
+                        id: el.id + "-remind",
                         date: remindTimeCreate(reminder.time, el.date),
-                        name: el.eventName + "Remind",
+                        name: el.eventName + "-REMIND",
                         callback: reminder.callback
                     })
                 }
                 if (el.id === reminder.id) {
                     Calendar.setEvent({
-                        id: el.id + "Remind",
+                        id: el.id + "-remind",
                         date: remindTimeCreate(reminder.time, el.date),
-                        name: el.eventName + "Remind",
+                        name: el.eventName + "-REMIND",
                         callback: reminder.callback
                     })
                 }
